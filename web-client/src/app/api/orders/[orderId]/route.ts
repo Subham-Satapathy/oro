@@ -9,14 +9,13 @@ const INPUT_FILE_PATH = path.join(ENGINE_DIR, 'src/input/orders.json');
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { orderId: string } }
+  context: { params: { orderId: string } }
 ) {
   try {
-    // Properly await params to access orderId property
-    const { orderId } = await params;
+    const { orderId } = await context.params;
     console.log(`Attempting to delete order with ID: ${orderId}`);
 
-    // Check if file exists
+  
     if (!fs.existsSync(INPUT_FILE_PATH)) {
       console.error(`Orders file not found at path: ${INPUT_FILE_PATH}`);
       return NextResponse.json(
@@ -25,7 +24,7 @@ export async function DELETE(
       );
     }
 
-    // Read existing orders
+    
     try {
       const fileContents = fs.readFileSync(INPUT_FILE_PATH, 'utf8');
       let orders: Order[];
@@ -50,10 +49,10 @@ export async function DELETE(
         );
       }
 
-      // Filter out the order to delete
+     
       const updatedOrders = orders.filter(order => order.order_id !== orderId);
 
-      // If the lengths are the same, the order wasn't found
+     
       if (orders.length === updatedOrders.length) {
         console.log(`Order with ID ${orderId} not found`);
         return NextResponse.json(
@@ -62,7 +61,7 @@ export async function DELETE(
         );
       }
 
-      // Write back to file
+      
       fs.writeFileSync(INPUT_FILE_PATH, JSON.stringify(updatedOrders, null, 2));
       console.log(`Successfully deleted order with ID: ${orderId}`);
 
