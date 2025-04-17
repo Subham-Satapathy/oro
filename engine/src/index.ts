@@ -1,106 +1,47 @@
-import { OrderController } from './controllers/OrderController';
+import { MatchingEngine } from './services/MatchingEngine';
 import { Order } from './models/Order';
-import { serve } from 'bun';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 
-const controller = new OrderController();
+async function main() {
+  try {
+    // Define all paths at once
+    const paths = {
+      // Use path.resolve to go up from dist/index.js to the src/input directory
+      orders: path.resolve(__dirname, '../src/input/orders.json'),
+      orderBook: path.resolve(__dirname, '../outputs/orderbook.json'),
+      trades: path.resolve(__dirname, '../outputs/trades.json')
+    };
 
-const server = serve({
-  port: 3000,
-  async fetch(req) {
-    const url = new URL(req.url);
+    console.log('Reading orders from:', paths.orders);
+
+    // Read orders file and process in one step
+    const orders: Order[] = JSON.parse(
+      await fs.readFile(paths.orders, 'utf-8')
+    );
+
+    // Process orders and get results
+    const engine = new MatchingEngine();
+    engine.processOrders(orders);
     
-    // Health check endpoint
-    if (url.pathname === '/health' && req.method === 'GET') {
-      return new Response(JSON.stringify({ status: 'ok' }), {
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-    
-    // Place a new order
-    if (url.pathname === '/api/orders' && req.method === 'POST') {
-      try {
-        const body = await req.json();
-        const order: Order = {
-          type_op: body.type_op || 'limit',
-          account_id: body.account_id,
-          amount: body.amount,
-          order_id: body.order_id,
-          pair: body.pair,
-          limit_price: body.limit_price,
-          side: body.side
-        };
-        
-        // Validate required fields
-        if (!order.account_id || !order.amount || !order.pair || 
-            !order.limit_price || !order.side) {
-          return new Response(JSON.stringify({ 
-            error: 'Missing required fields' 
-          }), { 
-            status: 400, 
-            headers: { 'Content-Type': 'application/json' } 
-          });
-        }
-        
-        // Process the single order
-        await controller.processOrders([order]);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          message: 'Order placed successfully',
-          order_id: order.order_id
-        }), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } catch (err) {
-        return new Response(JSON.stringify({ 
-          error: err instanceof Error ? err.message : String(err) 
-        }), { 
-          status: 500, 
-          headers: { 'Content-Type': 'application/json' } 
-        });
-      }
-    }
-    
-    // Get orderbook
-    if (url.pathname === '/api/orderbook' && req.method === 'GET') {
-      try {
-        const orderBook = controller.getOrderBook();
-        return new Response(JSON.stringify(orderBook), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } catch (err) {
-        return new Response(JSON.stringify({ 
-          error: err instanceof Error ? err.message : String(err) 
-        }), { 
-          status: 500, 
-          headers: { 'Content-Type': 'application/json' } 
-        });
-      }
-    }
-    
-    // Get trades
-    if (url.pathname === '/api/trades' && req.method === 'GET') {
-      try {
-        const trades = controller.getTrades();
-        return new Response(JSON.stringify(trades), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } catch (err) {
-        return new Response(JSON.stringify({ 
-          error: err instanceof Error ? err.message : String(err) 
-        }), { 
-          status: 500, 
-          headers: { 'Content-Type': 'application/json' } 
-        });
-      }
-    }
-    
-    // Not found
-    return new Response(JSON.stringify({ error: 'Not found' }), { 
-      status: 404, 
-      headers: { 'Content-Type': 'application/json' } 
-    });
+    // Write files in parallel for better performance
+    await Promise.all([
+      fs.writeFile(
+        paths.orderBook, 
+        JSON.stringify(engine.getOrderBook(), null, 2)
+      ),
+      fs.writeFile(
+        paths.trades, 
+        JSON.stringify(engine.getTrades(), null, 2)
+      )
+    ]);
+
+    console.log('Processing complete. Check orderbook.json and trades.json for results.');
+  } catch (error) {
+    console.error('Error processing orders:', error instanceof Error ? error.message : String(error));
+    process.exit(1);
   }
-});
+}
 
-console.log(`Order engine API server running at http://localhost:${server.port}`);
+// Execute immediately
+main();
