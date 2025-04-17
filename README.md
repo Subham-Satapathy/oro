@@ -1,38 +1,37 @@
-# ORO Trading Engine
+# ORO - Trading Platform
 
-A high-performance matching engine for cryptocurrency trading built with TypeScript.
+A comprehensive cryptocurrency trading platform with a high-performance matching engine and web client.
 
-## Prerequisites
+## Project Structure
 
-- [Node.js](https://nodejs.org/) (v20 or later recommended)
-- TypeScript installed
+The project is organized into two main components:
 
-## Installation
+- **engine/** - A high-performance trading engine for order matching
+- **web-client/** - A Next.js web application for the trading interface
+
+## Engine
+
+### Features
+
+- Processes order creation and cancellation
+- Implements price-time priority matching algorithm
+- Generates executed trades
+- Maintains an order book
+
+### Installation & Usage
 
 ```bash
 cd engine
 npm install
-```
-
-## Running the Engine
-
-Build the TypeScript code:
-```bash
 npm run build
-```
-
-Start the engine:
-```bash
 npm start
 ```
-
-## Input and Output
 
 The engine reads orders from `src/input/orders.json` and outputs to:
 - `outputs/orderbook.json` - The current state of the order book
 - `outputs/trades.json` - All executed trades
 
-## Order Format
+### Order Format
 
 ```json
 {
@@ -48,57 +47,34 @@ The engine reads orders from `src/input/orders.json` and outputs to:
 
 The `type_op` field can be either `CREATE` to place a new order or `DELETE` to cancel an existing order.
 
-## Order Book Structure
+### Testing the Engine
 
-The order book maintains buy orders (bids) and sell orders (asks) sorted by price:
-- Bids are sorted in descending order (highest price first)
-- Asks are sorted in ascending order (lowest price first)
-
-## Trade Matching
-
-Orders are matched when:
-1. A buy order's price meets or exceeds a sell order's price
-2. Orders are for the same trading pair
-
-When orders match, trades are executed at the price of the pre-existing order in the book.
-
-## Example Orders
-
-### Place a Buy Order
-```json
-{
-  "type_op": "CREATE",
-  "account_id": "2",
-  "amount": "0.5",
-  "order_id": "11",
-  "pair": "BTC/USDC",
-  "limit_price": "66577.30",
-  "side": "BUY"
-}
+```bash
+cd engine
+npm test
 ```
 
-### Place a Sell Order
-```json
-{
-  "type_op": "CREATE",
-  "account_id": "1",
-  "amount": "0.2",
-  "order_id": "6",
-  "pair": "BTC/USDC",
-  "limit_price": "47500",
-  "side": "SELL"
-}
+## Web Client
+
+The web client is built with Next.js.
+
+### Getting Started
+
+```bash
+cd web-client
+npm install
+npm run dev
 ```
 
-### Cancel an Order
-```json
-{
-  "type_op": "DELETE",
-  "account_id": "1",
-  "amount": "0.12785",
-  "order_id": "5",
-  "pair": "BTC/USDC",
-  "limit_price": "61577.30",
-  "side": "SELL"
-}
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+### Deployment
+
+The easiest way to deploy the Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v20 or later recommended)
+- TypeScript
