@@ -9,11 +9,11 @@ const INPUT_FILE_PATH = path.join(ENGINE_DIR, 'src/input/orders.json');
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { orderId: string } }
+  { params }: { params: { orderId: string } }
 ) {
   try {
-    const params = await context.params;
-    const orderId = params.orderId;
+    // Properly await params to access orderId property
+    const { orderId } = await params;
     console.log(`Attempting to delete order with ID: ${orderId}`);
 
     // Check if file exists
