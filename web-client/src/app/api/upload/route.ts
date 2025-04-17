@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { Order } from '../../../lib/types';
@@ -7,7 +7,7 @@ import { Order } from '../../../lib/types';
 const ENGINE_DIR = path.resolve(process.cwd(), '../../oro/engine');
 const INPUT_FILE_PATH = path.join(ENGINE_DIR, 'src/input/orders.json');
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;

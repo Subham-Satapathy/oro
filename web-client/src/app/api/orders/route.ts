@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { Order } from '../../../lib/types';
@@ -38,7 +38,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const newOrder = await request.json();
     

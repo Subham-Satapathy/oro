@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { Order } from '../../../../lib/types';
@@ -8,12 +8,12 @@ const ENGINE_DIR = path.resolve(process.cwd(), '../../oro/engine');
 const INPUT_FILE_PATH = path.join(ENGINE_DIR, 'src/input/orders.json');
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { orderId: string } }
+  request: NextRequest,
+  context: { params: { orderId: string } }
 ) {
   try {
-    const parameters = await params;
-    const orderId = parameters.orderId;
+    const params = await context.params;
+    const orderId = params.orderId;
     console.log(`Attempting to delete order with ID: ${orderId}`);
 
     // Check if file exists
