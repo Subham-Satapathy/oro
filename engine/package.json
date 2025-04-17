@@ -1,0 +1,23 @@
+{
+  "name": "trading-engine",
+  "version": "1.0.0",
+  "description": "Trading engine for order matching",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "bun dist/index.js",
+    "dev": "bun --watch src/index.ts",
+    "test": "vitest",
+    "test:watch": "vitest watch"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.0.0",
+    "bun-types": "latest",
+    "typescript": "^5.0.0",
+    "vitest": "^0.34.0"
+  }
+}

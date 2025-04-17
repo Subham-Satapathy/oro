@@ -1,0 +1,58 @@
+[
+  {
+    "trade_id": "43cd8619-77f8-4460-830c-be6463a0f055",
+    "buyOrderId": "2",
+    "sellOrderId": "1",
+    "price": 63500,
+    "quantity": 0.0023,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "db4b9ca5-391d-4fac-8b72-fc062686da87",
+    "buyOrderId": "3",
+    "sellOrderId": "4",
+    "price": 62880.54,
+    "quantity": 0.00798,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "fd7982a7-4a9b-45e4-91c1-9b3a05d04c4c",
+    "buyOrderId": "7",
+    "sellOrderId": "6",
+    "price": 47500,
+    "quantity": 0.2,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "3cd803be-7f15-4c98-9ace-f20d63ebc41d",
+    "buyOrderId": "9",
+    "sellOrderId": "8",
+    "price": 61577.3,
+    "quantity": 2.345,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "0f8853b6-98d9-41c5-9573-c980bb0c24bf",
+    "buyOrderId": "10",
+    "sellOrderId": "8",
+    "price": 61577.3,
+    "quantity": 2,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "ee1e2160-4d42-40bc-b157-1622b0f24419",
+    "buyOrderId": "11",
+    "sellOrderId": "8",
+    "price": 61577.3,
+    "quantity": 0.5,
+    "timestamp": 1744889231080
+  },
+  {
+    "trade_id": "d71e2404-f87c-45f8-a302-172d63c57bc2",
+    "buyOrderId": "12",
+    "sellOrderId": "8",
+    "price": 61577.3,
+    "quantity": 1.4999999999999996,
+    "timestamp": 1744889231080
+  }
+]
