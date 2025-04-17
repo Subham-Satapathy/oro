@@ -1,100 +1,81 @@
-# Trading Engine API
+# Trading Engine
 
-A high-performance trading engine with RESTful APIs built with Bun.
+A high-performance trading engine for order matching.
 
-## Prerequisites
+## Features
 
-- [Bun](https://bun.sh/) runtime installed
+- Processes order creation and cancellation
+- Implements price-time priority matching algorithm
+- Generates executed trades
+- Maintains an order book
 
 ## Installation
 
 ```bash
-bun install
+npm install
 ```
 
-## Running the API server
+## Usage
 
-Development mode with hot reloading:
+### Building the application
+
 ```bash
-bun dev
+npm run build
 ```
 
-Production mode:
+### Running the application
+
 ```bash
-bun run build
-bun start
+npm start
 ```
 
-The API server will be available at http://localhost:3000
+The application reads orders from `src/input/orders.json` and produces two output files:
+- `outputs/orderbook.json`: The current state of the order book
+- `outputs/trades.json`: The list of trades that were executed
 
-## API Endpoints
+## Testing
 
-### Health Check
-```
-GET /health
-```
+The trading engine is thoroughly tested with Jest. To run the tests:
 
-### Place an Order
-```
-POST /api/orders
-```
-
-Example request body:
-```json
-{
-  "account_id": "user123",
-  "amount": "1.5",
-  "pair": "BTC-USD",
-  "limit_price": "30000",
-  "side": "buy",
-  "type_op": "limit" 
-}
-```
-
-### Get Order Book
-```
-GET /api/orderbook
-```
-
-### Get Trades
-```
-GET /api/trades
-```
-
-## Example cURL Commands
-
-### Place a Buy Order
 ```bash
-curl -X POST http://localhost:3000/api/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "account_id": "user123",
-    "amount": "1.5",
-    "pair": "BTC-USD",
-    "limit_price": "30000",
-    "side": "buy"
-  }'
+npm test
 ```
 
-### Place a Sell Order
-```bash
-curl -X POST http://localhost:3000/api/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "account_id": "user456",
-    "amount": "1.5",
-    "pair": "BTC-USD",
-    "limit_price": "30100",
-    "side": "sell"
-  }'
+### Test Coverage
+
+The test suite includes tests for:
+- Order model validation
+- Order matching logic for buy and sell orders
+- Order cancellation
+- Partial fills
+- Edge cases (no match, price mismatch)
+- Main application workflow
+
+## Project Structure
+
+```
+engine/
+├── src/
+│   ├── controllers/   # Business logic controllers
+│   ├── models/        # Data models
+│   ├── services/      # Core services (MatchingEngine)
+│   ├── views/         # View-related code
+│   ├── input/         # Input files
+│   └── index.ts       # Main application entry point
+├── test/
+│   ├── models/        # Tests for models
+│   ├── services/      # Tests for services
+│   └── index.test.ts  # Tests for main application
+├── outputs/           # Generated output files
+└── dist/              # Compiled JavaScript code
 ```
 
-### Get Order Book
-```bash
-curl http://localhost:3000/api/orderbook
-```
+## Development
 
-### Get Trades
-```bash
-curl http://localhost:3000/api/trades
-```
+### Adding New Tests
+
+To add new tests:
+
+1. Create a test file in the appropriate directory (e.g., `test/services/NewService.test.ts`)
+2. Write your tests using Jest's describe/it pattern
+3. Run `npm test` to validate your tests
