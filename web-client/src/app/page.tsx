@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { OrderBookTable } from '@/components/OrderBookTable';
 import { TradesTable } from '@/components/TradesTable';
 import { OrderForm } from '@/components/OrderForm';
@@ -24,7 +24,7 @@ export default function Home() {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async (showLoadingState = true) => {
+  const fetchData = useCallback(async (showLoadingState = true) => {
     try {
       if (showLoadingState) {
         setIsLoading(true);
@@ -55,7 +55,7 @@ export default function Home() {
         setIsLoading(false);
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData(true);
@@ -63,7 +63,7 @@ export default function Home() {
     const intervalId = setInterval(() => fetchData(false), 5000);
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchData]);
 
   const showNotification = (type: 'success' | 'error' | 'info', message: string) => {
     setNotification({

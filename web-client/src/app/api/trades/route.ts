@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { Trade } from '../../../lib/types';
 
 // File paths
 const ENGINE_DIR = path.resolve(process.cwd(), '../../oro/engine');

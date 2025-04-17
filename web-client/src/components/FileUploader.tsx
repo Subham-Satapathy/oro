@@ -58,7 +58,7 @@ export function FileUploader({ onFileUploaded }: FileUploaderProps) {
           fileInputRef.current.value = '';
         }
       }
-    } catch (error) {
+    } catch {
       onFileUploaded(false, 'Error uploading file. Please try again.');
     } finally {
       setIsUploading(false);
