@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         message: 'Orders appended successfully',
         totalOrders: combinedOrders.length
       });
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { success: false, message: 'Invalid JSON file' },
         { status: 400 }
